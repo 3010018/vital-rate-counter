@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 24.8.1.2 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;/&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;/&gt;
+  &lt;title&gt;SAAS Vital Rate Counter (Demo)&lt;/title&gt;
+  &lt;style&gt;
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f151d;
+      --panel2:#101a24;
+      --border:#1f2a3a;
+      --text:#e8eef6;
+      --muted:rgba(232,238,246,.75);
+      --saas:#0a7a67;
+      --saas2:#075f51;
+      --warn:#7a5b1a;
+      --good:#1f6a40;
+      --btn:#0f1522;
+      --btnOn:#163146;
+      --btnBorder:#2a3a52;
+      --shadow:0 10px 28px rgba(0,0,0,.35);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    header{
+      position:sticky;top:0;z-index:10;
+      background:linear-gradient(180deg,var(--saas) 0%,var(--saas2) 100%);
+      padding:14px 14px 10px; box-shadow:var(--shadow);
+    }
+    .toprow{display:flex;gap:10px;align-items:center}
+    .search{
+      flex:1;background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:14px;padding:10px 12px;
+      color:rgba(255,255,255,.9);font-weight:800;
+      display:flex;align-items:center;gap:10px
+    }
+    .pillrow{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+    .tab{padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.15);font-weight:900;font-size:12px}
+    .tab.on{background:rgba(0,0,0,.42);border-color:rgba(255,255,255,.28)}
+    .title{margin-top:10px;font-weight:950;font-size:16px}
+    main{max-width:980px;margin:0 auto;padding:14px 14px 26px}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:18px;
+      padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+    .grid{display:flex;gap:12px;flex-wrap:wrap}
+    .col{flex:1 1 290px;min-width:290px}
+    .label{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:6px}
+    .mt{margin-top:10px}
+    .seg{
+      display:flex;gap:8px;flex-wrap:wrap;background:var(--panel2);
+      padding:8px;border-radius:16px;border:1px solid var(--border)
+    }
+    button, select, input{font:inherit;color:var(--text)}
+    .btn{
+      border:1px solid var(--btnBorder);background:var(--btn);
+      padding:10px 12px;border-radius:14px;cursor:pointer;
+      font-weight:900;user-select:none;flex:1 1 auto
+    }
+    .btn.small{padding:9px 10px;font-size:12px}
+    .btn.active{background:var(--btnOn);border-color:#3a5a86}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    select,input{
+      width:100%;padding:10px 12px;border-radius:14px;
+      border:1px solid var(--btnBorder);background:var(--btn)
+    }
+    .banner{
+      padding:10px 12px;border-radius:16px;border:1px solid var(--border);
+      background:var(--panel2);font-size:13px;line-height:1.25rem
+    }
+    .banner.warn{border-color:var(--warn);background:#19140b}
+    .banner.good{border-color:var(--good);background:#0e1913}
+    .bigTap{
+      width:100%;height:220px;border-radius:22px;border:2px solid var(--btnBorder);
+      background:linear-gradient(180deg,var(--panel2) 0%,var(--bg) 100%);
+      font-size:20px;font-weight:1000;cursor:pointer
+    }
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .stat{background:var(--panel2);border:1px solid var(--border);border-radius:16px;padding:10px}
+    .stat .k{font-size:12px;color:var(--muted);font-weight:800}
+    .stat .v{font-size:22px;font-weight:1000;margin-top:4px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .result{font-size:34px;font-weight:1000}
+    .sub{color:var(--muted);font-size:13px;margin-top:6px}
+    .row{display:flex;gap:10px}
+    .hide{display:none !important}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;div class=&quot;toprow&quot;&gt;
+    &lt;div class=&quot;search&quot;&gt;🔎 &lt;span&gt;Procedures, guidelines, tools&lt;/span&gt;&lt;/div&gt;
+    &lt;div title=&quot;Profile&quot;&gt;👤&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;pillrow&quot;&gt;
+    &lt;div class=&quot;tab&quot;&gt;Level&lt;/div&gt;
+    &lt;div class=&quot;tab on&quot;&gt;ICP&lt;/div&gt;
+    &lt;div class=&quot;tab&quot;&gt;Recent&lt;/div&gt;
+    &lt;div class=&quot;tab&quot;&gt;Favourites&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;title&quot;&gt;Vital Rate Counter (Demo)&lt;/div&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;section class=&quot;card&quot;&gt;
+    &lt;div class=&quot;grid&quot;&gt;
+      &lt;div class=&quot;col&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Measure&lt;/div&gt;
+        &lt;div class=&quot;seg&quot; id=&quot;measureSeg&quot;&gt;
+          &lt;button class=&quot;btn active&quot; data-measure=&quot;RR&quot;&gt;🫁 RR&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; data-measure=&quot;HR&quot;&gt;🫀 HR&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;label mt&quot;&gt;Pattern&lt;/div&gt;
+        &lt;div class=&quot;seg&quot; id=&quot;patternSeg&quot;&gt;
+          &lt;button class=&quot;btn active&quot; data-pattern=&quot;regular&quot;&gt;Regular&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; data-pattern=&quot;irregular&quot;&gt;Irregular&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;banner warn mt hide&quot; id=&quot;irregularBanner&quot;&gt;
+          Irregular selected → &lt;b&gt;60-second count required&lt;/b&gt; (duration locked).
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Count duration&lt;/div&gt;
+        &lt;div class=&quot;seg&quot; id=&quot;timeSeg&quot;&gt;
+          &lt;button class=&quot;btn active&quot; data-seconds=&quot;15&quot;&gt;15s&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; data-seconds=&quot;30&quot;&gt;30s&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; data-seconds=&quot;60&quot;&gt;60s&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;banner mt&quot; id=&quot;statusBanner&quot;&gt;Ready.&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Age group (Paeds RADAR alignment)&lt;/div&gt;
+        &lt;div class=&quot;seg&quot; id=&quot;ageGroupSeg&quot;&gt;
+          &lt;button class=&quot;btn small active&quot; data-agegroup=&quot;adult&quot;&gt;Adult&lt;/button&gt;
+          &lt;button class=&quot;btn small&quot; data-agegroup=&quot;paeds&quot;&gt;Paeds&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div id=&quot;paedsControls&quot; class=&quot;mt hide&quot;&gt;
+          &lt;div class=&quot;label&quot;&gt;Age (Paeds)&lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;
+            &lt;input id=&quot;ageValue&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;200&quot; step=&quot;1&quot; value=&quot;2&quot;/&gt;
+            &lt;select id=&quot;ageUnit&quot;&gt;
+              &lt;option value=&quot;days&quot;&gt;days&lt;/option&gt;
+              &lt;option value=&quot;months&quot;&gt;months&lt;/option&gt;
+              &lt;option value=&quot;years&quot; selected&gt;years&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;label mt&quot;&gt;RADAR age band&lt;/div&gt;
+          &lt;div class=&quot;banner&quot; id=&quot;ageBandBanner&quot;&gt;--&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;banner mt&quot; id=&quot;ageBanner&quot;&gt;Age group: &lt;b&gt;Adult&lt;/b&gt;.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section class=&quot;card&quot;&gt;
+    &lt;button class=&quot;bigTap&quot; id=&quot;tapBtn&quot; disabled&gt;Tap for each breath / beat&lt;/button&gt;
+
+    &lt;div class=&quot;stats&quot;&gt;
+      &lt;div class=&quot;stat&quot;&gt;
+        &lt;div class=&quot;k&quot;&gt;Taps counted&lt;/div&gt;
+        &lt;div class=&quot;v&quot; id=&quot;tapCount&quot;&gt;0&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;
+        &lt;div class=&quot;k&quot;&gt;Time remaining&lt;/div&gt;
+        &lt;div class=&quot;v&quot; id=&quot;timeRemaining&quot;&gt;--&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;actions&quot;&gt;
+      &lt;button class=&quot;btn&quot; id=&quot;startBtn&quot;&gt;Start&lt;/button&gt;
+      &lt;button class=&quot;btn&quot; id=&quot;undoBtn&quot; disabled&gt;Undo&lt;/button&gt;
+      &lt;button class=&quot;btn&quot; id=&quot;resetBtn&quot; disabled&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;mt&quot;&gt;
+      &lt;div class=&quot;label&quot;&gt;Result&lt;/div&gt;
+      &lt;div class=&quot;result&quot; id=&quot;resultText&quot;&gt;-- bpm&lt;/div&gt;
+      &lt;div class=&quot;sub&quot; id=&quot;resultMeta&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+(() =&gt; {
+  // --- State ---
+  let measure = &quot;RR&quot;;              // RR | HR
+  let pattern = &quot;regular&quot;;         // regular | irregular
+  let secondsMode = 15;            // default 15s
+  let running = false;
+  let taps = 0;
+  let timerId = null;
+  let endAt = null;
+
+  // Age group
+  let ageGroup = &quot;adult&quot;;          // adult | paeds
+
+  // --- Elements ---
+  const measureSeg = document.getElementById(&quot;measureSeg&quot;);
+  const patternSeg = document.getElementById(&quot;patternSeg&quot;);
+  const timeSeg = document.getElementById(&quot;timeSeg&quot;);
+  const irregularBanner = document.getElementById(&quot;irregularBanner&quot;);
+  const statusBanner = document.getElementById(&quot;statusBanner&quot;);
+
+  const ageGroupSeg = document.getElementById(&quot;ageGroupSeg&quot;);
+  const paedsControls = document.getElementById(&quot;paedsControls&quot;);
+  const ageBanner = document.getElementById(&quot;ageBanner&quot;);
+  const ageBandBanner = document.getElementById(&quot;ageBandBanner&quot;);
+  const ageValue = document.getElementById(&quot;ageValue&quot;);
+  const ageUnit = document.getElementById(&quot;ageUnit&quot;);
+
+  const tapBtn = document.getElementById(&quot;tapBtn&quot;);
+  const startBtn = document.getElementById(&quot;startBtn&quot;);
+  const undoBtn = document.getElementById(&quot;undoBtn&quot;);
+  const resetBtn = document.getElementById(&quot;resetBtn&quot;);
+  const tapCount = document.getElementById(&quot;tapCount&quot;);
+  const timeRemaining = document.getElementById(&quot;timeRemaining&quot;);
+  const resultText = document.getElementById(&quot;resultText&quot;);
+  const resultMeta = document.getElementById(&quot;resultMeta&quot;);
+
+  // --- Helpers ---
+  function setActiveButtons(container, predicateFn) {
+    [...container.querySelectorAll(&quot;button&quot;)].forEach(btn =&gt; {
+      btn.classList.toggle(&quot;active&quot;, predicateFn(btn));
+    });
+  }
+
+  function ageToDays(value, unit) {
+    const v = Math.max(0, Number.isFinite(value) ? value : 0);
+    if (unit === &quot;days&quot;) return v;
+    if (unit === &quot;months&quot;) return v * 30.44;
+    return v * 365.25;
+  }
+
+  // RADAR paeds bands:
+  // Neonate 0–7d; &lt;3m; 3m–1y; 1–4y; 5–11y; 12–16y
+  function radarPaedsBandLabel(days) {
+    if (days &lt;= 7) return &quot;Neonate (0–7 days)&quot;;
+    if (days &lt; (3 * 30.44)) return &quot;&lt;3 months&quot;;
+    if (days &lt; 365.25) return &quot;3 months – 1 year&quot;;
+    if (days &lt; (5 * 365.25)) return &quot;1–4 years&quot;;
+    if (days &lt; (12 * 365.25)) return &quot;5–11 years&quot;;
+    return &quot;12–16 years&quot;;
+  }
+
+  function updatePaedsBandUI() {
+    if (ageGroup !== &quot;paeds&quot;) return;
+    const v = parseFloat(ageValue.value);
+    const u = ageUnit.value;
+    const days = ageToDays(v, u);
+    ageBandBanner.textContent = radarPaedsBandLabel(days);
+    ageBanner.innerHTML = `Age group: &lt;b&gt;Paeds&lt;/b&gt; (${ageBandBanner.textContent}).`;
+  }
+
+  function applyAgeGroupUI() {
+    paedsControls.classList.toggle(&quot;hide&quot;, ageGroup !== &quot;paeds&quot;);
+    if (ageGroup === &quot;paeds&quot;) updatePaedsBandUI();
+    else ageBanner.innerHTML = `Age group: &lt;b&gt;Adult&lt;/b&gt;.`;
+    updateStatusReady();
+  }
+
+  function lockTimerTo60IfIrregular() {
+    const isIrreg = pattern === &quot;irregular&quot;;
+    irregularBanner.classList.toggle(&quot;hide&quot;, !isIrreg);
+
+    // Disable duration selection when irregular
+    [...timeSeg.querySelectorAll(&quot;button&quot;)].forEach(btn =&gt; btn.disabled = isIrreg);
+
+    if (isIrreg) {
+      secondsMode = 60;
+      setActiveButtons(timeSeg, b =&gt; b.dataset.seconds === &quot;60&quot;);
+    }
+    updateStatusReady();
+  }
+
+  function updateStatusReady() {
+    if (running) return;
+    const s = secondsMode;
+    const what = (measure === &quot;RR&quot;) ? &quot;breath&quot; : &quot;beat&quot;;
+    const pat = (pattern === &quot;irregular&quot;) ? &quot;Irregular&quot; : &quot;Regular&quot;;
+    statusBanner.className = &quot;banner&quot;;
+    statusBanner.innerHTML = `Ready: &lt;b&gt;${measure}&lt;/b&gt; (${pat}), window &lt;b&gt;${s}s&lt;/b&gt;. Press &lt;b&gt;Start&lt;/b&gt;, then tap each ${what}.`;
+  }
+
+  function updateUI() {
+    tapCount.textContent = String(taps);
+    undoBtn.disabled = !running || taps === 0;
+    tapBtn.disabled = !running;
+    startBtn.textContent = running ? &quot;Stop&quot; : &quot;Start&quot;;
+    resetBtn.disabled = !running &amp;&amp; (taps === 0 &amp;&amp; resultText.textContent.startsWith(&quot;--&quot;));
+  }
+
+  function computeRate(tapsCount, secondsCounted) {
+    const rate = tapsCount * (60 / secondsCounted);
+    return Math.round(rate);
+  }
+
+  function finishCount(fullWindowSeconds, note) {
+    running = false;
+    if (timerId) clearInterval(timerId);
+    timerId = null;
+
+    const rate = computeRate(taps, fullWindowSeconds);
+    const pat = (pattern === &quot;irregular&quot;) ? &quot;Irregular&quot; : &quot;Regular&quot;;
+
+    resultText.textContent = `${rate} bpm`;
+
+    let ageMeta = (ageGroup === &quot;paeds&quot;) ? `Paeds (${ageBandBanner.textContent})` : &quot;Adult&quot;;
+    resultMeta.textContent = `${measure} • ${pat} • ${ageMeta} • ${fullWindowSeconds}s • taps=${taps}${note ? &quot; • &quot; + note : &quot;&quot;}`;
+
+    statusBanner.className = note ? &quot;banner warn&quot; : &quot;banner good&quot;;
+    statusBanner.innerHTML = note ? note : `Complete. ${measure} calculated from ${taps} taps over ${fullWindowSeconds}s.`;
+
+    timeRemaining.textContent = &quot;0&quot;;
+    updateUI();
+  }
+
+  function tick() {
+    const msLeft = endAt - Date.now();
+    const secLeft = Math.max(0, Math.ceil(msLeft / 1000));
+    timeRemaining.textContent = String(secLeft);
+    if (msLeft &lt;= 0) finishCount(secondsMode, &quot;&quot;);
+  }
+
+  // --- Handlers ---
+  measureSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
+    const btn = e.target.closest(&quot;button[data-measure]&quot;);
+    if (!btn || running) return;
+    measure = btn.dataset.measure;
+    setActiveButtons(measureSeg, b =&gt; b.dataset.measure === measure);
+    tapBtn.textContent = (measure === &quot;RR&quot;) ? &quot;Tap for each breath&quot; : &quot;Tap for each beat&quot;;
+    updateStatusReady();
+    updateUI();
+  });
+
+  patternSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
+    const btn = e.target.closest(&quot;button[data-pattern]&quot;);
+    if (!btn || running) return;
+    pattern = btn.dataset.pattern;
+    setActiveButtons(patternSeg, b =&gt; b.dataset.pattern === pattern);
+    lockTimerTo60IfIrregular();
+    updateUI();
+  });
+
+  timeSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
+    const btn = e.target.closest(&quot;button[data-seconds]&quot;);
+    if (!btn || running) return;
+    if (pattern === &quot;irregular&quot;) return; // locked
+    secondsMode = parseInt(btn.dataset.seconds, 10);
+    setActiveButtons(timeSeg, b =&gt; b.dataset.seconds === btn.dataset.seconds);
+    updateStatusReady();
+  });
+
+  ageGroupSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
+    const btn = e.target.closest(&quot;button[data-agegroup]&quot;);
+    if (!btn || running) return;
+    ageGroup = btn.dataset.agegroup;
+    setActiveButtons(ageGroupSeg, b =&gt; b.dataset.agegroup === ageGroup);
+    applyAgeGroupUI();
+  });
+
+  ageValue.addEventListener(&quot;input&quot;, () =&gt; { if (!running &amp;&amp; ageGroup === &quot;paeds&quot;) updatePaedsBandUI(); });
+  ageUnit.addEventListener(&quot;change&quot;, () =&gt; { if (!running &amp;&amp; ageGroup === &quot;paeds&quot;) updatePaedsBandUI(); });
+
+  tapBtn.addEventListener(&quot;click&quot;, () =&gt; {
+    if (!running) return;
+    taps += 1;
+    tapCount.textContent = String(taps);
+    undoBtn.disabled = taps === 0;
+    if (navigator.vibrate) navigator.vibrate(10);
+  });
+
+  undoBtn.addEventListener(&quot;click&quot;, () =&gt; {
+    if (!running || taps === 0) return;
+    taps -= 1;
+    tapCount.textContent = String(taps);
+    undoBtn.disabled = taps === 0;
+  });
+
+  resetBtn.addEventListener(&quot;click&quot;, () =&gt; {
+    if (running) {
+      taps = 0;
+      tapCount.textContent = &quot;0&quot;;
+      undoBtn.disabled = true;
+      statusBanner.className = &quot;banner&quot;;
+      statusBanner.innerHTML = &quot;Count reset. Continue tapping or press Stop to finish early.&quot;;
+      return;
+    }
+    taps = 0;
+    timeRemaining.textContent = &quot;--&quot;;
+    resultText.textContent = &quot;-- bpm&quot;;
+    resultMeta.textContent = &quot;&quot;;
+    updateStatusReady();
+    updateUI();
+  });
+
+  startBtn.addEventListener(&quot;click&quot;, () =&gt; {
+    if (!running) {
+      // START
+      taps = 0;
+      tapCount.textContent = &quot;0&quot;;
+      resultText.textContent = &quot;-- bpm&quot;;
+      resultMeta.textContent = &quot;&quot;;
+
+      running = true;
+      endAt = Date.now() + (secondsMode * 1000);
+      timeRemaining.textContent = String(secondsMode);
+
+      statusBanner.className = &quot;banner&quot;;
+      statusBanner.innerHTML = `Counting for &lt;b&gt;${secondsMode}s&lt;/b&gt;. Tap each ${(measure === &quot;RR&quot;) ? &quot;breath&quot; : &quot;beat&quot;}.`;
+
+      timerId = setInterval(tick, 100);
+      updateUI();
+      return;
+    }
+
+    // STOP EARLY (allowed)
+    const sTotal = secondsMode;
+    const elapsed = Math.max(1, Math.round((sTotal * 1000 - (endAt - Date.now())) / 1000));
+    finishCount(elapsed, `Stopped early at &lt;b&gt;${elapsed}s&lt;/b&gt;. Result uses elapsed time.`);
+  });
+
+  // --- Init ---
+  tapBtn.textContent = &quot;Tap for each breath&quot;;
+  applyAgeGroupUI();
+  lockTimerTo60IfIrregular();
+  updateStatusReady();
+  updateUI();
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</body>
+</html>
