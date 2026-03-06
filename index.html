@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<title></title>
-	<meta name="generator" content="LibreOffice 24.8.1.2 (Linux)"/>
-	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="00:00:00"/>
-	<style type="text/css">
-		@page { size: 8.27in 11.69in; margin: 0.79in }
-		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
-		pre { background: transparent }
-		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
-		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
-		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
-	</style>
-</head>
-<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;utf-8&quot;/&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;/&gt;
-  &lt;title&gt;SAAS Vital Rate Counter (Demo)&lt;/title&gt;
-  &lt;style&gt;
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SAAS Vital Rate Counter (Demo)</title>
+  <style>
     :root{
       --bg:#0b0f14;
       --panel:#0f151d;
@@ -103,114 +86,114 @@
     .sub{color:var(--muted);font-size:13px;margin-top:6px}
     .row{display:flex;gap:10px}
     .hide{display:none !important}
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;header&gt;
-  &lt;div class=&quot;toprow&quot;&gt;
-    &lt;div class=&quot;search&quot;&gt;🔎 &lt;span&gt;Procedures, guidelines, tools&lt;/span&gt;&lt;/div&gt;
-    &lt;div title=&quot;Profile&quot;&gt;👤&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;pillrow&quot;&gt;
-    &lt;div class=&quot;tab&quot;&gt;Level&lt;/div&gt;
-    &lt;div class=&quot;tab on&quot;&gt;ICP&lt;/div&gt;
-    &lt;div class=&quot;tab&quot;&gt;Recent&lt;/div&gt;
-    &lt;div class=&quot;tab&quot;&gt;Favourites&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;title&quot;&gt;Vital Rate Counter (Demo)&lt;/div&gt;
-&lt;/header&gt;
+  </style>
+</head>
+<body>
+<header>
+  <div class="toprow">
+    <div class="search">🔎 <span>Procedures, guidelines, tools</span></div>
+    <div title="Profile">👤</div>
+  </div>
+  <div class="pillrow">
+    <div class="tab">Level</div>
+    <div class="tab on">ICP</div>
+    <div class="tab">Recent</div>
+    <div class="tab">Favourites</div>
+  </div>
+  <div class="title">Vital Rate Counter (Demo)</div>
+</header>
 
-&lt;main&gt;
-  &lt;section class=&quot;card&quot;&gt;
-    &lt;div class=&quot;grid&quot;&gt;
-      &lt;div class=&quot;col&quot;&gt;
-        &lt;div class=&quot;label&quot;&gt;Measure&lt;/div&gt;
-        &lt;div class=&quot;seg&quot; id=&quot;measureSeg&quot;&gt;
-          &lt;button class=&quot;btn active&quot; data-measure=&quot;RR&quot;&gt;🫁 RR&lt;/button&gt;
-          &lt;button class=&quot;btn&quot; data-measure=&quot;HR&quot;&gt;🫀 HR&lt;/button&gt;
-        &lt;/div&gt;
+<main>
+  <section class="card">
+    <div class="grid">
+      <div class="col">
+        <div class="label">Measure</div>
+        <div class="seg" id="measureSeg">
+          <button class="btn active" data-measure="RR">🫁 RR</button>
+          <button class="btn" data-measure="HR">🫀 HR</button>
+        </div>
 
-        &lt;div class=&quot;label mt&quot;&gt;Pattern&lt;/div&gt;
-        &lt;div class=&quot;seg&quot; id=&quot;patternSeg&quot;&gt;
-          &lt;button class=&quot;btn active&quot; data-pattern=&quot;regular&quot;&gt;Regular&lt;/button&gt;
-          &lt;button class=&quot;btn&quot; data-pattern=&quot;irregular&quot;&gt;Irregular&lt;/button&gt;
-        &lt;/div&gt;
+        <div class="label mt">Pattern</div>
+        <div class="seg" id="patternSeg">
+          <button class="btn active" data-pattern="regular">Regular</button>
+          <button class="btn" data-pattern="irregular">Irregular</button>
+        </div>
 
-        &lt;div class=&quot;banner warn mt hide&quot; id=&quot;irregularBanner&quot;&gt;
-          Irregular selected → &lt;b&gt;60-second count required&lt;/b&gt; (duration locked).
-        &lt;/div&gt;
-      &lt;/div&gt;
+        <div class="banner warn mt hide" id="irregularBanner">
+          Irregular selected → <b>60-second count required</b> (duration locked).
+        </div>
+      </div>
 
-      &lt;div class=&quot;col&quot;&gt;
-        &lt;div class=&quot;label&quot;&gt;Count duration&lt;/div&gt;
-        &lt;div class=&quot;seg&quot; id=&quot;timeSeg&quot;&gt;
-          &lt;button class=&quot;btn active&quot; data-seconds=&quot;15&quot;&gt;15s&lt;/button&gt;
-          &lt;button class=&quot;btn&quot; data-seconds=&quot;30&quot;&gt;30s&lt;/button&gt;
-          &lt;button class=&quot;btn&quot; data-seconds=&quot;60&quot;&gt;60s&lt;/button&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;banner mt&quot; id=&quot;statusBanner&quot;&gt;Ready.&lt;/div&gt;
-      &lt;/div&gt;
+      <div class="col">
+        <div class="label">Count duration</div>
+        <div class="seg" id="timeSeg">
+          <button class="btn active" data-seconds="15">15s</button>
+          <button class="btn" data-seconds="30">30s</button>
+          <button class="btn" data-seconds="60">60s</button>
+        </div>
+        <div class="banner mt" id="statusBanner">Ready.</div>
+      </div>
 
-      &lt;div class=&quot;col&quot;&gt;
-        &lt;div class=&quot;label&quot;&gt;Age group (Paeds RADAR alignment)&lt;/div&gt;
-        &lt;div class=&quot;seg&quot; id=&quot;ageGroupSeg&quot;&gt;
-          &lt;button class=&quot;btn small active&quot; data-agegroup=&quot;adult&quot;&gt;Adult&lt;/button&gt;
-          &lt;button class=&quot;btn small&quot; data-agegroup=&quot;paeds&quot;&gt;Paeds&lt;/button&gt;
-        &lt;/div&gt;
+      <div class="col">
+        <div class="label">Age group (Paeds RADAR alignment)</div>
+        <div class="seg" id="ageGroupSeg">
+          <button class="btn small active" data-agegroup="adult">Adult</button>
+          <button class="btn small" data-agegroup="paeds">Paeds</button>
+        </div>
 
-        &lt;div id=&quot;paedsControls&quot; class=&quot;mt hide&quot;&gt;
-          &lt;div class=&quot;label&quot;&gt;Age (Paeds)&lt;/div&gt;
-          &lt;div class=&quot;row&quot;&gt;
-            &lt;input id=&quot;ageValue&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;200&quot; step=&quot;1&quot; value=&quot;2&quot;/&gt;
-            &lt;select id=&quot;ageUnit&quot;&gt;
-              &lt;option value=&quot;days&quot;&gt;days&lt;/option&gt;
-              &lt;option value=&quot;months&quot;&gt;months&lt;/option&gt;
-              &lt;option value=&quot;years&quot; selected&gt;years&lt;/option&gt;
-            &lt;/select&gt;
-          &lt;/div&gt;
+        <div id="paedsControls" class="mt hide">
+          <div class="label">Age (Paeds)</div>
+          <div class="row">
+            <input id="ageValue" type="number" min="0" max="200" step="1" value="2"/>
+            <select id="ageUnit">
+              <option value="days">days</option>
+              <option value="months">months</option>
+              <option value="years" selected>years</option>
+            </select>
+          </div>
 
-          &lt;div class=&quot;label mt&quot;&gt;RADAR age band&lt;/div&gt;
-          &lt;div class=&quot;banner&quot; id=&quot;ageBandBanner&quot;&gt;--&lt;/div&gt;
-        &lt;/div&gt;
+          <div class="label mt">RADAR age band</div>
+          <div class="banner" id="ageBandBanner">--</div>
+        </div>
 
-        &lt;div class=&quot;banner mt&quot; id=&quot;ageBanner&quot;&gt;Age group: &lt;b&gt;Adult&lt;/b&gt;.&lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/section&gt;
+        <div class="banner mt" id="ageBanner">Age group: <b>Adult</b>.</div>
+      </div>
+    </div>
+  </section>
 
-  &lt;section class=&quot;card&quot;&gt;
-    &lt;button class=&quot;bigTap&quot; id=&quot;tapBtn&quot; disabled&gt;Tap for each breath / beat&lt;/button&gt;
+  <section class="card">
+    <button class="bigTap" id="tapBtn" disabled>Tap for each breath / beat</button>
 
-    &lt;div class=&quot;stats&quot;&gt;
-      &lt;div class=&quot;stat&quot;&gt;
-        &lt;div class=&quot;k&quot;&gt;Taps counted&lt;/div&gt;
-        &lt;div class=&quot;v&quot; id=&quot;tapCount&quot;&gt;0&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;stat&quot;&gt;
-        &lt;div class=&quot;k&quot;&gt;Time remaining&lt;/div&gt;
-        &lt;div class=&quot;v&quot; id=&quot;timeRemaining&quot;&gt;--&lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+    <div class="stats">
+      <div class="stat">
+        <div class="k">Taps counted</div>
+        <div class="v" id="tapCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="k">Time remaining</div>
+        <div class="v" id="timeRemaining">--</div>
+      </div>
+    </div>
 
-    &lt;div class=&quot;actions&quot;&gt;
-      &lt;button class=&quot;btn&quot; id=&quot;startBtn&quot;&gt;Start&lt;/button&gt;
-      &lt;button class=&quot;btn&quot; id=&quot;undoBtn&quot; disabled&gt;Undo&lt;/button&gt;
-      &lt;button class=&quot;btn&quot; id=&quot;resetBtn&quot; disabled&gt;Reset&lt;/button&gt;
-    &lt;/div&gt;
+    <div class="actions">
+      <button class="btn" id="startBtn">Start</button>
+      <button class="btn" id="undoBtn" disabled>Undo</button>
+      <button class="btn" id="resetBtn" disabled>Reset</button>
+    </div>
 
-    &lt;div class=&quot;mt&quot;&gt;
-      &lt;div class=&quot;label&quot;&gt;Result&lt;/div&gt;
-      &lt;div class=&quot;result&quot; id=&quot;resultText&quot;&gt;-- bpm&lt;/div&gt;
-      &lt;div class=&quot;sub&quot; id=&quot;resultMeta&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/section&gt;
-&lt;/main&gt;
+    <div class="mt">
+      <div class="label">Result</div>
+      <div class="result" id="resultText">-- bpm</div>
+      <div class="sub" id="resultMeta"></div>
+    </div>
+  </section>
+</main>
 
-&lt;script&gt;
-(() =&gt; {
+<script>
+(() => {
   // --- State ---
-  let measure = &quot;RR&quot;;              // RR | HR
-  let pattern = &quot;regular&quot;;         // regular | irregular
+  let measure = "RR";              // RR | HR
+  let pattern = "regular";         // regular | irregular
   let secondsMode = 15;            // default 15s
   let running = false;
   let taps = 0;
@@ -218,82 +201,82 @@
   let endAt = null;
 
   // Age group
-  let ageGroup = &quot;adult&quot;;          // adult | paeds
+  let ageGroup = "adult";          // adult | paeds
 
   // --- Elements ---
-  const measureSeg = document.getElementById(&quot;measureSeg&quot;);
-  const patternSeg = document.getElementById(&quot;patternSeg&quot;);
-  const timeSeg = document.getElementById(&quot;timeSeg&quot;);
-  const irregularBanner = document.getElementById(&quot;irregularBanner&quot;);
-  const statusBanner = document.getElementById(&quot;statusBanner&quot;);
+  const measureSeg = document.getElementById("measureSeg");
+  const patternSeg = document.getElementById("patternSeg");
+  const timeSeg = document.getElementById("timeSeg");
+  const irregularBanner = document.getElementById("irregularBanner");
+  const statusBanner = document.getElementById("statusBanner");
 
-  const ageGroupSeg = document.getElementById(&quot;ageGroupSeg&quot;);
-  const paedsControls = document.getElementById(&quot;paedsControls&quot;);
-  const ageBanner = document.getElementById(&quot;ageBanner&quot;);
-  const ageBandBanner = document.getElementById(&quot;ageBandBanner&quot;);
-  const ageValue = document.getElementById(&quot;ageValue&quot;);
-  const ageUnit = document.getElementById(&quot;ageUnit&quot;);
+  const ageGroupSeg = document.getElementById("ageGroupSeg");
+  const paedsControls = document.getElementById("paedsControls");
+  const ageBanner = document.getElementById("ageBanner");
+  const ageBandBanner = document.getElementById("ageBandBanner");
+  const ageValue = document.getElementById("ageValue");
+  const ageUnit = document.getElementById("ageUnit");
 
-  const tapBtn = document.getElementById(&quot;tapBtn&quot;);
-  const startBtn = document.getElementById(&quot;startBtn&quot;);
-  const undoBtn = document.getElementById(&quot;undoBtn&quot;);
-  const resetBtn = document.getElementById(&quot;resetBtn&quot;);
-  const tapCount = document.getElementById(&quot;tapCount&quot;);
-  const timeRemaining = document.getElementById(&quot;timeRemaining&quot;);
-  const resultText = document.getElementById(&quot;resultText&quot;);
-  const resultMeta = document.getElementById(&quot;resultMeta&quot;);
+  const tapBtn = document.getElementById("tapBtn");
+  const startBtn = document.getElementById("startBtn");
+  const undoBtn = document.getElementById("undoBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const tapCount = document.getElementById("tapCount");
+  const timeRemaining = document.getElementById("timeRemaining");
+  const resultText = document.getElementById("resultText");
+  const resultMeta = document.getElementById("resultMeta");
 
   // --- Helpers ---
   function setActiveButtons(container, predicateFn) {
-    [...container.querySelectorAll(&quot;button&quot;)].forEach(btn =&gt; {
-      btn.classList.toggle(&quot;active&quot;, predicateFn(btn));
+    [...container.querySelectorAll("button")].forEach(btn => {
+      btn.classList.toggle("active", predicateFn(btn));
     });
   }
 
   function ageToDays(value, unit) {
     const v = Math.max(0, Number.isFinite(value) ? value : 0);
-    if (unit === &quot;days&quot;) return v;
-    if (unit === &quot;months&quot;) return v * 30.44;
+    if (unit === "days") return v;
+    if (unit === "months") return v * 30.44;
     return v * 365.25;
   }
 
   // RADAR paeds bands:
-  // Neonate 0–7d; &lt;3m; 3m–1y; 1–4y; 5–11y; 12–16y
+  // Neonate 0–7d; <3m; 3m–1y; 1–4y; 5–11y; 12–16y
   function radarPaedsBandLabel(days) {
-    if (days &lt;= 7) return &quot;Neonate (0–7 days)&quot;;
-    if (days &lt; (3 * 30.44)) return &quot;&lt;3 months&quot;;
-    if (days &lt; 365.25) return &quot;3 months – 1 year&quot;;
-    if (days &lt; (5 * 365.25)) return &quot;1–4 years&quot;;
-    if (days &lt; (12 * 365.25)) return &quot;5–11 years&quot;;
-    return &quot;12–16 years&quot;;
+    if (days <= 7) return "Neonate (0–7 days)";
+    if (days < (3 * 30.44)) return "<3 months";
+    if (days < 365.25) return "3 months – 1 year";
+    if (days < (5 * 365.25)) return "1–4 years";
+    if (days < (12 * 365.25)) return "5–11 years";
+    return "12–16 years";
   }
 
   function updatePaedsBandUI() {
-    if (ageGroup !== &quot;paeds&quot;) return;
+    if (ageGroup !== "paeds") return;
     const v = parseFloat(ageValue.value);
     const u = ageUnit.value;
     const days = ageToDays(v, u);
     ageBandBanner.textContent = radarPaedsBandLabel(days);
-    ageBanner.innerHTML = `Age group: &lt;b&gt;Paeds&lt;/b&gt; (${ageBandBanner.textContent}).`;
+    ageBanner.innerHTML = `Age group: <b>Paeds</b> (${ageBandBanner.textContent}).`;
   }
 
   function applyAgeGroupUI() {
-    paedsControls.classList.toggle(&quot;hide&quot;, ageGroup !== &quot;paeds&quot;);
-    if (ageGroup === &quot;paeds&quot;) updatePaedsBandUI();
-    else ageBanner.innerHTML = `Age group: &lt;b&gt;Adult&lt;/b&gt;.`;
+    paedsControls.classList.toggle("hide", ageGroup !== "paeds");
+    if (ageGroup === "paeds") updatePaedsBandUI();
+    else ageBanner.innerHTML = `Age group: <b>Adult</b>.`;
     updateStatusReady();
   }
 
   function lockTimerTo60IfIrregular() {
-    const isIrreg = pattern === &quot;irregular&quot;;
-    irregularBanner.classList.toggle(&quot;hide&quot;, !isIrreg);
+    const isIrreg = pattern === "irregular";
+    irregularBanner.classList.toggle("hide", !isIrreg);
 
     // Disable duration selection when irregular
-    [...timeSeg.querySelectorAll(&quot;button&quot;)].forEach(btn =&gt; btn.disabled = isIrreg);
+    [...timeSeg.querySelectorAll("button")].forEach(btn => btn.disabled = isIrreg);
 
     if (isIrreg) {
       secondsMode = 60;
-      setActiveButtons(timeSeg, b =&gt; b.dataset.seconds === &quot;60&quot;);
+      setActiveButtons(timeSeg, b => b.dataset.seconds === "60");
     }
     updateStatusReady();
   }
@@ -301,18 +284,18 @@
   function updateStatusReady() {
     if (running) return;
     const s = secondsMode;
-    const what = (measure === &quot;RR&quot;) ? &quot;breath&quot; : &quot;beat&quot;;
-    const pat = (pattern === &quot;irregular&quot;) ? &quot;Irregular&quot; : &quot;Regular&quot;;
-    statusBanner.className = &quot;banner&quot;;
-    statusBanner.innerHTML = `Ready: &lt;b&gt;${measure}&lt;/b&gt; (${pat}), window &lt;b&gt;${s}s&lt;/b&gt;. Press &lt;b&gt;Start&lt;/b&gt;, then tap each ${what}.`;
+    const what = (measure === "RR") ? "breath" : "beat";
+    const pat = (pattern === "irregular") ? "Irregular" : "Regular";
+    statusBanner.className = "banner";
+    statusBanner.innerHTML = `Ready: <b>${measure}</b> (${pat}), window <b>${s}s</b>. Press <b>Start</b>, then tap each ${what}.`;
   }
 
   function updateUI() {
     tapCount.textContent = String(taps);
     undoBtn.disabled = !running || taps === 0;
     tapBtn.disabled = !running;
-    startBtn.textContent = running ? &quot;Stop&quot; : &quot;Start&quot;;
-    resetBtn.disabled = !running &amp;&amp; (taps === 0 &amp;&amp; resultText.textContent.startsWith(&quot;--&quot;));
+    startBtn.textContent = running ? "Stop" : "Start";
+    resetBtn.disabled = !running && (taps === 0 && resultText.textContent.startsWith("--"));
   }
 
   function computeRate(tapsCount, secondsCounted) {
@@ -326,17 +309,17 @@
     timerId = null;
 
     const rate = computeRate(taps, fullWindowSeconds);
-    const pat = (pattern === &quot;irregular&quot;) ? &quot;Irregular&quot; : &quot;Regular&quot;;
+    const pat = (pattern === "irregular") ? "Irregular" : "Regular";
 
     resultText.textContent = `${rate} bpm`;
 
-    let ageMeta = (ageGroup === &quot;paeds&quot;) ? `Paeds (${ageBandBanner.textContent})` : &quot;Adult&quot;;
-    resultMeta.textContent = `${measure} • ${pat} • ${ageMeta} • ${fullWindowSeconds}s • taps=${taps}${note ? &quot; • &quot; + note : &quot;&quot;}`;
+    let ageMeta = (ageGroup === "paeds") ? `Paeds (${ageBandBanner.textContent})` : "Adult";
+    resultMeta.textContent = `${measure} • ${pat} • ${ageMeta} • ${fullWindowSeconds}s • taps=${taps}${note ? " • " + note : ""}`;
 
-    statusBanner.className = note ? &quot;banner warn&quot; : &quot;banner good&quot;;
+    statusBanner.className = note ? "banner warn" : "banner good";
     statusBanner.innerHTML = note ? note : `Complete. ${measure} calculated from ${taps} taps over ${fullWindowSeconds}s.`;
 
-    timeRemaining.textContent = &quot;0&quot;;
+    timeRemaining.textContent = "0";
     updateUI();
   }
 
@@ -344,50 +327,50 @@
     const msLeft = endAt - Date.now();
     const secLeft = Math.max(0, Math.ceil(msLeft / 1000));
     timeRemaining.textContent = String(secLeft);
-    if (msLeft &lt;= 0) finishCount(secondsMode, &quot;&quot;);
+    if (msLeft <= 0) finishCount(secondsMode, "");
   }
 
   // --- Handlers ---
-  measureSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
-    const btn = e.target.closest(&quot;button[data-measure]&quot;);
+  measureSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-measure]");
     if (!btn || running) return;
     measure = btn.dataset.measure;
-    setActiveButtons(measureSeg, b =&gt; b.dataset.measure === measure);
-    tapBtn.textContent = (measure === &quot;RR&quot;) ? &quot;Tap for each breath&quot; : &quot;Tap for each beat&quot;;
+    setActiveButtons(measureSeg, b => b.dataset.measure === measure);
+    tapBtn.textContent = (measure === "RR") ? "Tap for each breath" : "Tap for each beat";
     updateStatusReady();
     updateUI();
   });
 
-  patternSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
-    const btn = e.target.closest(&quot;button[data-pattern]&quot;);
+  patternSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-pattern]");
     if (!btn || running) return;
     pattern = btn.dataset.pattern;
-    setActiveButtons(patternSeg, b =&gt; b.dataset.pattern === pattern);
+    setActiveButtons(patternSeg, b => b.dataset.pattern === pattern);
     lockTimerTo60IfIrregular();
     updateUI();
   });
 
-  timeSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
-    const btn = e.target.closest(&quot;button[data-seconds]&quot;);
+  timeSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-seconds]");
     if (!btn || running) return;
-    if (pattern === &quot;irregular&quot;) return; // locked
+    if (pattern === "irregular") return; // locked
     secondsMode = parseInt(btn.dataset.seconds, 10);
-    setActiveButtons(timeSeg, b =&gt; b.dataset.seconds === btn.dataset.seconds);
+    setActiveButtons(timeSeg, b => b.dataset.seconds === btn.dataset.seconds);
     updateStatusReady();
   });
 
-  ageGroupSeg.addEventListener(&quot;click&quot;, (e) =&gt; {
-    const btn = e.target.closest(&quot;button[data-agegroup]&quot;);
+  ageGroupSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-agegroup]");
     if (!btn || running) return;
     ageGroup = btn.dataset.agegroup;
-    setActiveButtons(ageGroupSeg, b =&gt; b.dataset.agegroup === ageGroup);
+    setActiveButtons(ageGroupSeg, b => b.dataset.agegroup === ageGroup);
     applyAgeGroupUI();
   });
 
-  ageValue.addEventListener(&quot;input&quot;, () =&gt; { if (!running &amp;&amp; ageGroup === &quot;paeds&quot;) updatePaedsBandUI(); });
-  ageUnit.addEventListener(&quot;change&quot;, () =&gt; { if (!running &amp;&amp; ageGroup === &quot;paeds&quot;) updatePaedsBandUI(); });
+  ageValue.addEventListener("input", () => { if (!running && ageGroup === "paeds") updatePaedsBandUI(); });
+  ageUnit.addEventListener("change", () => { if (!running && ageGroup === "paeds") updatePaedsBandUI(); });
 
-  tapBtn.addEventListener(&quot;click&quot;, () =&gt; {
+  tapBtn.addEventListener("click", () => {
     if (!running) return;
     taps += 1;
     tapCount.textContent = String(taps);
@@ -395,44 +378,44 @@
     if (navigator.vibrate) navigator.vibrate(10);
   });
 
-  undoBtn.addEventListener(&quot;click&quot;, () =&gt; {
+  undoBtn.addEventListener("click", () => {
     if (!running || taps === 0) return;
     taps -= 1;
     tapCount.textContent = String(taps);
     undoBtn.disabled = taps === 0;
   });
 
-  resetBtn.addEventListener(&quot;click&quot;, () =&gt; {
+  resetBtn.addEventListener("click", () => {
     if (running) {
       taps = 0;
-      tapCount.textContent = &quot;0&quot;;
+      tapCount.textContent = "0";
       undoBtn.disabled = true;
-      statusBanner.className = &quot;banner&quot;;
-      statusBanner.innerHTML = &quot;Count reset. Continue tapping or press Stop to finish early.&quot;;
+      statusBanner.className = "banner";
+      statusBanner.innerHTML = "Count reset. Continue tapping or press Stop to finish early.";
       return;
     }
     taps = 0;
-    timeRemaining.textContent = &quot;--&quot;;
-    resultText.textContent = &quot;-- bpm&quot;;
-    resultMeta.textContent = &quot;&quot;;
+    timeRemaining.textContent = "--";
+    resultText.textContent = "-- bpm";
+    resultMeta.textContent = "";
     updateStatusReady();
     updateUI();
   });
 
-  startBtn.addEventListener(&quot;click&quot;, () =&gt; {
+  startBtn.addEventListener("click", () => {
     if (!running) {
       // START
       taps = 0;
-      tapCount.textContent = &quot;0&quot;;
-      resultText.textContent = &quot;-- bpm&quot;;
-      resultMeta.textContent = &quot;&quot;;
+      tapCount.textContent = "0";
+      resultText.textContent = "-- bpm";
+      resultMeta.textContent = "";
 
       running = true;
       endAt = Date.now() + (secondsMode * 1000);
       timeRemaining.textContent = String(secondsMode);
 
-      statusBanner.className = &quot;banner&quot;;
-      statusBanner.innerHTML = `Counting for &lt;b&gt;${secondsMode}s&lt;/b&gt;. Tap each ${(measure === &quot;RR&quot;) ? &quot;breath&quot; : &quot;beat&quot;}.`;
+      statusBanner.className = "banner";
+      statusBanner.innerHTML = `Counting for <b>${secondsMode}s</b>. Tap each ${(measure === "RR") ? "breath" : "beat"}.`;
 
       timerId = setInterval(tick, 100);
       updateUI();
@@ -442,18 +425,16 @@
     // STOP EARLY (allowed)
     const sTotal = secondsMode;
     const elapsed = Math.max(1, Math.round((sTotal * 1000 - (endAt - Date.now())) / 1000));
-    finishCount(elapsed, `Stopped early at &lt;b&gt;${elapsed}s&lt;/b&gt;. Result uses elapsed time.`);
+    finishCount(elapsed, `Stopped early at <b>${elapsed}s</b>. Result uses elapsed time.`);
   });
 
   // --- Init ---
-  tapBtn.textContent = &quot;Tap for each breath&quot;;
+  tapBtn.textContent = "Tap for each breath";
   applyAgeGroupUI();
   lockTimerTo60IfIrregular();
   updateStatusReady();
   updateUI();
 })();
-&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
+</script>
 </body>
 </html>
