@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SAAS Vital Rate Counter (Demo)</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f151d;
+      --panel2:#101a24;
+      --border:#1f2a3a;
+      --text:#e8eef6;
+      --muted:rgba(232,238,246,.75);
+      --saas:#0a7a67;
+      --saas2:#075f51;
+      --warn:#7a5b1a;
+      --good:#1f6a40;
+      --btn:#0f1522;
+      --btnOn:#163146;
+      --btnBorder:#2a3a52;
+      --shadow:0 10px 28px rgba(0,0,0,.35);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    header{
+      position:sticky;top:0;z-index:10;
+      background:linear-gradient(180deg,var(--saas) 0%,var(--saas2) 100%);
+      padding:14px 14px 10px; box-shadow:var(--shadow);
+    }
+    .toprow{display:flex;gap:10px;align-items:center}
+    .search{
+      flex:1;background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:14px;padding:10px 12px;
+      color:rgba(255,255,255,.9);font-weight:800;
+      display:flex;align-items:center;gap:10px
+    }
+    .pillrow{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+    .tab{padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.15);font-weight:900;font-size:12px}
+    .tab.on{background:rgba(0,0,0,.42);border-color:rgba(255,255,255,.28)}
+    .title{margin-top:10px;font-weight:950;font-size:16px}
+    main{max-width:980px;margin:0 auto;padding:14px 14px 26px}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:18px;
+      padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+    .grid{display:flex;gap:12px;flex-wrap:wrap}
+    .col{flex:1 1 290px;min-width:290px}
+    .label{font-size:12px;color:var(--muted);font-weight:800;margin-bottom:6px}
+    .mt{margin-top:10px}
+    .seg{
+      display:flex;gap:8px;flex-wrap:wrap;background:var(--panel2);
+      padding:8px;border-radius:16px;border:1px solid var(--border)
+    }
+    button, select, input{font:inherit;color:var(--text)}
+    .btn{
+      border:1px solid var(--btnBorder);background:var(--btn);
+      padding:10px 12px;border-radius:14px;cursor:pointer;
+      font-weight:900;user-select:none;flex:1 1 auto
+    }
+    .btn.small{padding:9px 10px;font-size:12px}
+    .btn.active{background:var(--btnOn);border-color:#3a5a86}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .btnBig{width:100%;padding:16px 14px;font-size:18px;border-width:2px;border-radius:18px}
+    select,input{
+      width:100%;padding:10px 12px;border-radius:14px;
+      border:1px solid var(--btnBorder);background:var(--btn)
+    }
+    .banner{
+      padding:10px 12px;border-radius:16px;border:1px solid var(--border);
+      background:var(--panel2);font-size:13px;line-height:1.25rem
+    }
+    .banner.warn{border-color:var(--warn);background:#19140b}
+    .banner.good{border-color:var(--good);background:#0e1913}
+    .bigTap{
+      width:100%;height:220px;border-radius:22px;border:2px solid var(--btnBorder);
+      background:linear-gradient(180deg,var(--panel2) 0%,var(--bg) 100%);
+      font-size:20px;font-weight:1000;cursor:pointer
+    }
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .stat{background:var(--panel2);border:1px solid var(--border);border-radius:16px;padding:10px}
+    .stat .k{font-size:12px;color:var(--muted);font-weight:800}
+    .stat .v{font-size:22px;font-weight:1000;margin-top:4px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .sub{color:var(--muted);font-size:13px;margin-top:6px}
+    .row{display:flex;gap:10px}
+    .hide{display:none !important}
+
+    .progressWrap{background:var(--panel2);border:1px solid var(--border);border-radius:16px;padding:10px}
+    .progressTrack{width:100%;height:14px;border-radius:999px;background:rgba(232,238,246,.12);overflow:hidden;border:1px solid rgba(255,255,255,.10)}
+    .progressFill{height:100%;width:0%;background:linear-gradient(90deg,rgba(232,238,246,.55),rgba(232,238,246,.25));border-radius:999px}
+    .progressMeta{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+    .progressMeta .k{font-size:12px;color:var(--muted);font-weight:800}
+    .progressMeta .v{font-size:16px;font-weight:1000}
+
+    .inputWarn{border-color:var(--warn)!important;box-shadow:0 0 0 2px rgba(122,91,26,.25) inset}
+
+    .resultNum{font-size:44px;font-weight:1100;letter-spacing:-.5px}
+    .radar-normal{color:#2ecc71}
+    .radar-yellow{color:#d7b55b}
+    .radar-red{color:#ff6b6b}
+    .radar-purple{color:#b48cff}
+
+    /* Handover summary box */
+    .summaryBox{
+      margin-top:12px;
+      background:rgba(0,0,0,.28);
+      border:1px solid var(--btnBorder);
+      border-radius:16px;
+      padding:12px 14px;
+      font-size:15px;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .copyBtn{
+      border:1px solid var(--btnBorder);
+      background:var(--btn);
+      padding:8px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+    .copyBtn:active{background:var(--btnOn)}
+  </style>
+</head>
+<body>
+<header>
+  <div class="toprow">
+    <div class="search">🔎 <span>Procedures, guidelines, tools</span></div>
+    <div title="Profile">👤</div>
+  </div>
+  <div class="pillrow">
+    <div class="tab">Level</div>
+    <div class="tab on">ICP</div>
+    <div class="tab">Recent</div>
+    <div class="tab">Favourites</div>
+  </div>
+  <div class="title">Vital Rate Counter (Demo)</div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="grid">
+      <div class="col">
+        <div class="label">Measure</div>
+        <div class="seg" id="measureSeg">
+          <button class="btn active" data-measure="RR">🫁 RR</button>
+          <button class="btn" data-measure="HR">🫀 HR</button>
+        </div>
+
+        <div class="label mt">Pattern</div>
+        <div class="seg" id="patternSeg">
+          <button class="btn active" data-pattern="regular">Regular</button>
+          <button class="btn" data-pattern="irregular">Irregular</button>
+        </div>
+
+        <div class="banner warn mt hide" id="irregularBanner">
+          Irregular selected → <b>60-second count required</b> (duration locked).
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="label">Count duration</div>
+        <div class="seg" id="timeSeg">
+          <button class="btn active" data-seconds="15">15s</button>
+          <button class="btn" data-seconds="30">30s</button>
+          <button class="btn" data-seconds="60">60s</button>
+        </div>
+        <div class="banner mt" id="statusBanner">Ready.</div>
+      </div>
+
+      <div class="col">
+        <div class="label">Age group (Paeds RADAR alignment)</div>
+        <div class="seg" id="ageGroupSeg">
+          <button class="btn small active" data-agegroup="adult">Adult</button>
+          <button class="btn small" data-agegroup="paeds">Paeds</button>
+        </div>
+
+        <div id="paedsControls" class="mt hide">
+          <div class="label">Age (Paeds)</div>
+          <div class="row">
+            <input id="ageValue" type="number" min="0" max="200" step="1" value="2"/>
+            <select id="ageUnit">
+              <option value="days">days</option>
+              <option value="months">months</option>
+              <option value="years" selected>years</option>
+            </select>
+          </div>
+          <div class="label mt">RADAR age band</div>
+          <div class="banner" id="ageBandBanner">--</div>
+        </div>
+
+        <div class="banner mt" id="ageBanner">Age group: <b>Adult</b>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <button class="bigTap" id="tapBtn">Tap once for each breath</button>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="k">Taps counted</div>
+        <div class="v" id="tapCount">0</div>
+      </div>
+      <div class="progressWrap">
+        <div class="k">Progress</div>
+        <div class="progressTrack" aria-label="Countdown progress">
+          <div class="progressFill" id="progressFill"></div>
+        </div>
+        <div class="progressMeta">
+          <div class="k">Time remaining</div>
+          <div class="v" id="timeRemaining">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btnBig" id="resetBtn">Reset</button>
+    </div>
+
+    <div class="mt">
+      <div class="label">Result</div>
+      <div class="resultNum" id="resultText">--</div>
+      <div class="sub" id="resultMeta"></div>
+      <div class="sub" id="rangeNote"></div>
+      <div class="sub" id="irregularNote"></div>
+    </div>
+
+    <!-- Handover summary for volunteer phone patch -->
+    <div class="summaryBox hide" id="summaryBox">
+      <span id="summaryText"></span>
+      <button class="copyBtn" id="copyBtn">📋 Copy</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  // --- State ---
+  let measure = "RR";
+  let pattern = "regular";
+  let secondsMode = 15;
+  let running = false;
+  let locked = false;
+  let taps = 0;
+  let tapTimes = [];
+  const irregularBufferSec = 0.5;
+  let timerId = null;
+  let endAt = null;
+  let ageGroup = "adult";
+
+  // --- Elements ---
+  const measureSeg    = document.getElementById("measureSeg");
+  const patternSeg    = document.getElementById("patternSeg");
+  const timeSeg       = document.getElementById("timeSeg");
+  const irregularBanner = document.getElementById("irregularBanner");
+  const statusBanner  = document.getElementById("statusBanner");
+  const ageGroupSeg   = document.getElementById("ageGroupSeg");
+  const paedsControls = document.getElementById("paedsControls");
+  const ageBanner     = document.getElementById("ageBanner");
+  const ageBandBanner = document.getElementById("ageBandBanner");
+  const ageValue      = document.getElementById("ageValue");
+  const ageUnit       = document.getElementById("ageUnit");
+  const tapBtn        = document.getElementById("tapBtn");
+  const resetBtn      = document.getElementById("resetBtn");
+  const tapCount      = document.getElementById("tapCount");
+  const timeRemaining = document.getElementById("timeRemaining");
+  const progressFill  = document.getElementById("progressFill");
+  const resultText    = document.getElementById("resultText");
+  const resultMeta    = document.getElementById("resultMeta");
+  const rangeNote     = document.getElementById("rangeNote");
+  const irregularNote = document.getElementById("irregularNote");
+  const summaryBox    = document.getElementById("summaryBox");
+  const summaryText   = document.getElementById("summaryText");
+  const copyBtn       = document.getElementById("copyBtn");
+
+  // --- Helpers ---
+  function setActiveButtons(container, predicateFn) {
+    [...container.querySelectorAll("button")].forEach(btn => {
+      btn.classList.toggle("active", predicateFn(btn));
+    });
+  }
+
+  function ageToDays(value, unit) {
+    const v = Math.max(0, Number.isFinite(value) ? value : 0);
+    if (unit === "days")   return v;
+    if (unit === "months") return v * 30.44;
+    return v * 365.25;
+  }
+
+  function radarPaedsBandInfo(days) {
+    const maxDays = 16 * 365.25;
+    if (!Number.isFinite(days) || days < 0)
+      return { ok: false, band: "--", range: "Valid range: 0 days to 16 years" };
+    if (days > maxDays)
+      return { ok: false, band: "Out of range", range: "Valid range: 0 days to 16 years" };
+    if (days <= 7)            return { ok: true, band: "Neonate (0–7 days)",  range: "0–7 days" };
+    if (days < (3 * 30.44))  return { ok: true, band: "<3 months",           range: ">7 days to <3 months" };
+    if (days < 365.25)        return { ok: true, band: "3 months – 1 year",   range: "≥3 months to <1 year" };
+    if (days < (5 * 365.25)) return { ok: true, band: "1–4 years",           range: "≥1 year to <5 years" };
+    if (days < (12 * 365.25))return { ok: true, band: "5–11 years",          range: "≥5 years to <12 years" };
+    return                          { ok: true, band: "12–16 years",          range: "≥12 years to 16 years" };
+  }
+
+  function unitLabel() {
+    return measure === "RR" ? "breaths/min" : "bpm";
+  }
+
+  function updatePaedsBandUI() {
+    if (ageGroup !== "paeds") return;
+    const days = ageToDays(parseFloat(ageValue.value), ageUnit.value);
+    const info = radarPaedsBandInfo(days);
+    ageBandBanner.textContent = info.band;
+    if (!info.ok) {
+      ageBandBanner.classList.add("warn");
+      ageValue.classList.add("inputWarn");
+      ageUnit.classList.add("inputWarn");
+      ageBanner.className = "banner warn";
+      ageBanner.innerHTML = `Age group: <b>Paeds</b> — <b>OUT OF RADAR RANGE</b>. ${info.range}.`;
+    } else {
+      ageBandBanner.classList.remove("warn");
+      ageValue.classList.remove("inputWarn");
+      ageUnit.classList.remove("inputWarn");
+      ageBanner.className = "banner";
+      ageBanner.innerHTML = `Age group: <b>Paeds</b> (${info.band}).`;
+    }
+    updateStatusReady();
+  }
+
+  function applyAgeGroupUI() {
+    paedsControls.classList.toggle("hide", ageGroup !== "paeds");
+    rangeNote.textContent = "";
+    irregularNote.textContent = "";
+    summaryBox.classList.add("hide");
+    if (ageGroup === "paeds") {
+      updatePaedsBandUI();
+    } else {
+      ageValue.classList.remove("inputWarn");
+      ageUnit.classList.remove("inputWarn");
+      ageBanner.className = "banner";
+      ageBanner.innerHTML = `Age group: <b>Adult</b>.`;
+    }
+    updateStatusReady();
+  }
+
+  function lockTimerTo60IfIrregular() {
+    const isIrreg = pattern === "irregular";
+    irregularBanner.classList.toggle("hide", !isIrreg);
+    [...timeSeg.querySelectorAll("button")].forEach(btn => btn.disabled = isIrreg);
+    if (isIrreg) {
+      secondsMode = 60;
+      setActiveButtons(timeSeg, b => b.dataset.seconds === "60");
+    }
+    updateStatusReady();
+  }
+
+  function updateStatusReady() {
+    if (running) return;
+    const what = (measure === "RR") ? "breath" : "beat";
+    const pat  = (pattern === "irregular") ? "Irregular" : "Regular";
+    statusBanner.className = "banner";
+    if (locked) {
+      statusBanner.innerHTML = `Complete. Press <b>Reset</b> to start a new ${measure} count.`;
+    } else {
+      statusBanner.innerHTML = `Ready: <b>${measure}</b> (${pat}), window <b>${secondsMode}s</b>. Tap to start, then tap each ${what}.`;
+    }
+  }
+
+  function updateUI() {
+    tapCount.textContent = String(taps);
+    tapBtn.disabled = locked && !running;
+    resetBtn.disabled = false;
+  }
+
+  function computeRate(tapsCount, secondsCounted) {
+    return Math.round(tapsCount * (60 / secondsCounted));
+  }
+
+  // --- RADAR thresholds ---
+  const RADAR = {
+    rrAdult: { normal:[11,20], yellowLow:null,     redLow:[8,10],  purpleLow:[-1,7],  yellowHigh:[21,25], redHigh:[26,30], purpleHigh:[31,999] },
+    hrAdult: { normal:[60,99], yellowLow:[50,59],  redLow:[40,49], purpleLow:[-1,39], yellowHigh:[100,119], redHigh:[120,139], purpleHigh:[140,999] },
+    rr: {
+      neonate: { normal:[30,59], yellowLow:[20,29], redLow:null,    purpleLow:[-1,19], yellowHigh:[60,69], redHigh:[70,79],  purpleHigh:[80,999] },
+      lt3m:    { normal:[30,59], yellowLow:[25,29], redLow:[20,24], purpleLow:[-1,19], yellowHigh:[60,64], redHigh:[65,79],  purpleHigh:[80,999] },
+      m3_1y:   { normal:[30,44], yellowLow:[20,29], redLow:[17,19], purpleLow:[-1,16], yellowHigh:[45,54], redHigh:[55,64],  purpleHigh:[65,999] },
+      y1_4:    { normal:[20,34], yellowLow:[17,19], redLow:[15,16], purpleLow:[-1,14], yellowHigh:[35,39], redHigh:[40,49],  purpleHigh:[50,999] },
+      y5_11:   { normal:[16,24], yellowLow:[12,15], redLow:[10,11], purpleLow:[-1,9],  yellowHigh:[25,29], redHigh:[30,34],  purpleHigh:[35,999] },
+      y12_16:  { normal:[12,20], yellowLow:[10,11], redLow:[8,9],   purpleLow:[-1,7],  yellowHigh:[21,29], redHigh:[30,39],  purpleHigh:[40,999] }
+    },
+    hr: {
+      neonate: { normal:[100,159], yellowLow:null,      redLow:[80,99],  purpleLow:[-1,79], yellowHigh:[160,169], redHigh:[170,189], purpleHigh:[190,999] },
+      lt3m:    { normal:[110,159], yellowLow:[100,109], redLow:[80,99],  purpleLow:[-1,79], yellowHigh:[160,169], redHigh:[170,179], purpleHigh:[180,999] },
+      m3_1y:   { normal:[100,149], yellowLow:[90,99],   redLow:[80,89],  purpleLow:[-1,79], yellowHigh:[150,169], redHigh:[170,179], purpleHigh:[180,999] },
+      y1_4:    { normal:[90,139],  yellowLow:[80,89],   redLow:[70,79],  purpleLow:[-1,69], yellowHigh:[140,149], redHigh:[150,159], purpleHigh:[160,999] },
+      y5_11:   { normal:[70,119],  yellowLow:[60,69],   redLow:[50,59],  purpleLow:[-1,49], yellowHigh:[120,129], redHigh:[130,149], purpleHigh:[150,999] },
+      y12_16:  { normal:[60,109],  yellowLow:[50,59],   redLow:[40,49],  purpleLow:[-1,39], yellowHigh:[110,129], redHigh:[130,149], purpleHigh:[150,999] }
+    }
+  };
+
+  function radarBandKey(days) {
+    const info = radarPaedsBandInfo(days);
+    if (!info.ok) return null;
+    if (info.band.startsWith("Neonate"))  return "neonate";
+    if (info.band === "<3 months")        return "lt3m";
+    if (info.band.startsWith("3 months")) return "m3_1y";
+    if (info.band.startsWith("1–4"))      return "y1_4";
+    if (info.band.startsWith("5–11"))     return "y5_11";
+    if (info.band.startsWith("12–16"))    return "y12_16";
+    return null;
+  }
+
+  function inRange(rate, r) { return r && rate >= r[0] && rate <= r[1]; }
+
+  function radarColorFor(measureKey, bandKey, rate) {
+    const s = RADAR[measureKey][bandKey];
+    if (inRange(rate, s.normal))     return "normal";
+    if (inRange(rate, s.yellowLow))  return "yellow";
+    if (inRange(rate, s.redLow))     return "red";
+    if (inRange(rate, s.purpleLow))  return "purple";
+    if (inRange(rate, s.yellowHigh)) return "yellow";
+    if (inRange(rate, s.redHigh))    return "red";
+    if (inRange(rate, s.purpleHigh)) return "purple";
+    return "purple";
+  }
+
+  function radarAdultColorFor(measureKey, rate) {
+    const s = (measureKey === "rr") ? RADAR.rrAdult : RADAR.hrAdult;
+    if (inRange(rate, s.normal))     return "normal";
+    if (inRange(rate, s.yellowLow))  return "yellow";
+    if (inRange(rate, s.redLow))     return "red";
+    if (inRange(rate, s.purpleLow))  return "purple";
+    if (inRange(rate, s.yellowHigh)) return "yellow";
+    if (inRange(rate, s.redHigh))    return "red";
+    if (inRange(rate, s.purpleHigh)) return "purple";
+    return "purple";
+  }
+
+  function expectedRangeText(measureKey, bandKey) {
+    const s = (bandKey === "adult")
+      ? ((measureKey === "rr") ? RADAR.rrAdult : RADAR.hrAdult)
+      : RADAR[measureKey][bandKey];
+    return `${s.normal[0]}–${s.normal[1]} (${measureKey.toUpperCase()} normal)`;
+  }
+
+  function intervalStats(times) {
+    if (!Array.isArray(times) || times.length < 3) return null;
+    const intervals = [];
+    for (let i = 1; i < times.length; i++) intervals.push((times[i] - times[i-1]) / 1000);
+    if (intervals.length < 2) return null;
+    const min  = Math.min(...intervals);
+    const max  = Math.max(...intervals);
+    const mean = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    return { min, max, mean, spread: max - min };
+  }
+
+  function irregularitySummary(times) {
+    const stats = intervalStats(times);
+    if (!stats) return { possibleIrregular: false };
+    return {
+      possibleIrregular: stats.spread > irregularBufferSec,
+      variability: (stats.max - stats.min).toFixed(1)
+    };
+  }
+
+  function vibrate() {
+    try { if (navigator.vibrate) navigator.vibrate(10); } catch(e) {}
+  }
+
+  // --- Finish count ---
+  function finishCount(fullWindowSeconds, note) {
+    running = false;
+    locked  = true;
+    if (timerId) clearInterval(timerId);
+    timerId = null;
+
+    const rate       = computeRate(taps, fullWindowSeconds);
+    const pat        = (pattern === "irregular") ? "Irregular" : "Regular";
+    const measureKey = (measure === "RR") ? "rr" : "hr";
+    const unit       = unitLabel();
+
+    resultText.textContent = `${rate} ${unit}`;
+    resultText.classList.remove("radar-normal","radar-yellow","radar-red","radar-purple");
+
+    let ageMeta = "Adult";
+
+    if (ageGroup === "paeds") {
+      const days    = ageToDays(parseFloat(ageValue.value), ageUnit.value);
+      const info    = radarPaedsBandInfo(days);
+      const bandKey = radarBandKey(days);
+      ageMeta = `Paeds (${info.ok ? info.band : "Out of range"})`;
+      if (bandKey) {
+        resultText.classList.add(`radar-${radarColorFor(measureKey, bandKey, rate)}`);
+        rangeNote.textContent = info.ok
+          ? `RADAR band: ${info.band} (${info.range})`
+          : `RADAR range required: 0 days to 16 years.`;
+      }
+    } else {
+      resultText.classList.add(`radar-${radarAdultColorFor(measureKey, rate)}`);
+      rangeNote.textContent = `Expected: ${expectedRangeText(measureKey, "adult")}`;
+    }
+
+    resultMeta.textContent = `${measure} • ${pat} • ${ageMeta} • ${fullWindowSeconds}s • taps=${taps}${note ? " • " + note : ""}`;
+
+    statusBanner.className = note ? "banner warn" : "banner good";
+    const completionText = note ? note : `Complete. ${measure} calculated from ${taps} taps over ${fullWindowSeconds}s.`;
+    statusBanner.innerHTML = `${completionText} Press <b>Reset</b> to start a new count.`;
+
+    const irr = irregularitySummary(tapTimes);
+    if (irr.possibleIrregular) {
+      irregularNote.innerHTML = `⚠️ Possible irregular rate detected — interval variability: ${irr.variability}s`;
+      irregularNote.style.color = "#f0a500";
+    } else {
+      irregularNote.textContent = "";
+    }
+
+    timeRemaining.textContent = "0";
+    progressFill.style.width  = "100%";
+
+    // Handover summary line for volunteer phone patch
+    const irregFlag = irr.possibleIrregular ? " [POSSIBLE IRREGULAR]" : "";
+    summaryText.textContent = `${measure}: ${rate} ${unit} | ${pat} | ${ageMeta} | ${fullWindowSeconds}s count${irregFlag}`;
+    summaryBox.classList.remove("hide");
+
+    updateUI();
+  }
+
+  function tick() {
+    const msLeft  = endAt - Date.now();
+    const secLeft = Math.max(0, Math.ceil(msLeft / 1000));
+    timeRemaining.textContent = String(secLeft);
+    const totalMs = secondsMode * 1000;
+    const pct = totalMs > 0 ? (Math.min(totalMs, Math.max(0, totalMs - msLeft)) / totalMs) * 100 : 0;
+    progressFill.style.width = pct.toFixed(1) + "%";
+    if (msLeft <= 0) finishCount(secondsMode, "");
+  }
+
+  // --- Event handlers ---
+  measureSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-measure]");
+    if (!btn || running) return;
+    measure = btn.dataset.measure;
+    setActiveButtons(measureSeg, b => b.dataset.measure === measure);
+    tapBtn.textContent = (measure === "RR") ? "Tap once for each breath" : "Tap once for each beat";
+    updateStatusReady();
+    updateUI();
+  });
+
+  patternSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-pattern]");
+    if (!btn || running) return;
+    pattern = btn.dataset.pattern;
+    setActiveButtons(patternSeg, b => b.dataset.pattern === pattern);
+    lockTimerTo60IfIrregular();
+    updateUI();
+  });
+
+  timeSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-seconds]");
+    if (!btn || running || pattern === "irregular") return;
+    secondsMode = parseInt(btn.dataset.seconds, 10);
+    setActiveButtons(timeSeg, b => b.dataset.seconds === btn.dataset.seconds);
+    updateStatusReady();
+  });
+
+  ageGroupSeg.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-agegroup]");
+    if (!btn || running) return;
+    ageGroup = btn.dataset.agegroup;
+    setActiveButtons(ageGroupSeg, b => b.dataset.agegroup === ageGroup);
+    locked = false;
+    applyAgeGroupUI();
+  });
+
+  ageValue.addEventListener("input",  () => { if (!running && ageGroup === "paeds") updatePaedsBandUI(); });
+  ageUnit.addEventListener("change",  () => { if (!running && ageGroup === "paeds") updatePaedsBandUI(); });
+
+  tapBtn.addEventListener("click", () => {
+    if (locked && !running) return;
+
+    if (!running) {
+      taps = 0;
+      tapTimes = [];
+      tapCount.textContent   = "0";
+      resultText.textContent = "--";
+      resultMeta.textContent = "";
+      rangeNote.textContent  = "";
+      irregularNote.textContent = "";
+      summaryBox.classList.add("hide");
+
+      running = true;
+      locked  = true;
+      endAt   = Date.now() + (secondsMode * 1000);
+      timeRemaining.textContent = String(secondsMode);
+      progressFill.style.width  = "0%";
+
+      statusBanner.className = "banner";
+      statusBanner.innerHTML = `Counting for <b>${secondsMode}s</b>. Tap each ${(measure === "RR") ? "breath" : "beat"}.`;
+      timerId = setInterval(tick, 100);
+    }
+
+    taps += 1;
+    tapCount.textContent = String(taps);
+    tapTimes.push(Date.now());
+    updateUI();
+    vibrate();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    if (timerId) clearInterval(timerId);
+    timerId = null;
+    running = false;
+    locked  = false;
+    endAt   = null;
+    taps    = 0;
+    tapTimes = [];
+    tapCount.textContent   = "0";
+    timeRemaining.textContent = "--";
+    progressFill.style.width  = "0%";
+    resultText.textContent = "--";
+    resultText.classList.remove("radar-normal","radar-yellow","radar-red","radar-purple");
+    resultMeta.textContent = "";
+    rangeNote.textContent  = "";
+    irregularNote.textContent = "";
+    summaryBox.classList.add("hide");
+    updateStatusReady();
+    updateUI();
+  });
+
+  // Copy to clipboard — for volunteer phone patch handover
+  copyBtn.addEventListener("click", () => {
+    const text = summaryText.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(() => { copyBtn.textContent = "✅ Copied"; setTimeout(() => { copyBtn.textContent = "📋 Copy"; }, 2000); })
+        .catch(() => { copyBtn.textContent = "❌ Failed"; setTimeout(() => { copyBtn.textContent = "📋 Copy"; }, 2000); });
+    } else {
+      // Fallback for older/iOS browsers
+      const el = document.createElement("textarea");
+      el.value = text;
+      el.style.position = "fixed";
+      el.style.opacity  = "0";
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      try { document.execCommand("copy"); copyBtn.textContent = "✅ Copied"; }
+      catch(e) { copyBtn.textContent = "❌ Failed"; }
+      document.body.removeChild(el);
+      setTimeout(() => { copyBtn.textContent = "📋 Copy"; }, 2000);
+    }
+  });
+
+  // --- Init ---
+  tapBtn.textContent = "Tap once for each breath";
+  applyAgeGroupUI();
+  lockTimerTo60IfIrregular();
+  updateStatusReady();
+  updateUI();
+})();
+</script>
+</body>
+</html>
